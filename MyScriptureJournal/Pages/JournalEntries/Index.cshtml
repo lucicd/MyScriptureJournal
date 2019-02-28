@@ -8,41 +8,92 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-page="Create">Create New</a>
+    <a class="btn btn-outline-danger" asp-page="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
+
+<div class="container">
+    <form class="form-inline" asp-page="./Index" method="get">
+        <div class="form-group mr-2">
+            <label for="searchBook">Book:</label>
+            <input type="text" class="form-control ml-1" name="searchBook" id="searchBook" value="@Model.CurrentBookFilter" />
+        </div>
+        <div class="form-group mr-2">
+            <label for="searchKeyword">Keyword:</label>
+            <input type="text" class="form-control ml-1" name="searchKeyword" id="searchKeyword" value="@Model.CurrentKeywordFilter" />
+        </div>
+        <div class="btn-group">
+            <button type="submit" class="btn btn-outline-info mr-2">Search</button>
+            <a asp-page="./Index" class="btn btn-outline-info">Full List</a>
+        </div>
+    </form>
+</div>
+
+<table class="table mt-2 table-bordered table-hover table-sm">
+    <thead class="thead-light">
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.JournalEntry[0].Book)
+            <th style="width: 10%">
+                <a asp-page="./Index" asp-route-sortOrder="@Model.BookSort"
+                    asp-route-currentBookFilter="@Model.CurrentBookFilter"
+                    asp-route-currentKeywordFilter="@Model.CurrentKeywordFilter">
+                    @Html.DisplayNameFor(model => model.JournalEntry[0].Book)
+                </a>
             </th>
-            <th>
+            <th style="width: 62%">
                 @Html.DisplayNameFor(model => model.JournalEntry[0].Note)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.JournalEntry[0].DateAdded)
+            <th style="width: 10%">
+                <a asp-page="./Index" asp-route-sortOrder="@Model.DateAddedSort"
+                    asp-route-currentBookFilter="@Model.CurrentBookFilter"
+                    asp-route-currentKeywordFilter="@Model.CurrentKeywordFilter">
+                    @Html.DisplayNameFor(model => model.JournalEntry[0].DateAdded)
+                </a>
             </th>
-            <th></th>
+            <th style="width: 18%"></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.JournalEntry) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Book)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Note)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateAdded)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.JournalEntry)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Book)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Note)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateAdded)
+                </td>
+                <td>
+                    <div class="btn-group-sm">
+                        <a class="btn btn-outline-info" asp-page="./Edit" asp-route-id="@item.ID">Edit</a>
+                        <a class="btn btn-outline-info" asp-page="./Details" asp-route-id="@item.ID">Details</a>
+                        <a class="btn btn-outline-info" asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
+                    </div>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+@{
+    var prevDisabled = !Model.JournalEntry.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.JournalEntry.HasNextPage ? "disabled" : "";
+}
+
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.JournalEntry.PageIndex - 1)"
+   asp-route-currentBookFilter="@Model.CurrentBookFilter"
+   asp-route-currentKeywordFilter="@Model.CurrentKeywordFilter"
+   class="btn btn-outline-info @prevDisabled">
+    Previous
+</a>
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.JournalEntry.PageIndex + 1)"
+   asp-route-currentBookFilter="@Model.CurrentBookFilter"
+   asp-route-currentKeywordFilter="@Model.CurrentKeywordFilter"
+   class="btn btn-outline-info @nextDisabled">
+    Next
+</a>

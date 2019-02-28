@@ -7,7 +7,7 @@
 
 <h1>Create</h1>
 
-<h4>JournalEntry</h4>
+<h4>Journal Entry</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -20,7 +20,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="JournalEntry.Note" class="control-label"></label>
-                <input asp-for="JournalEntry.Note" class="form-control" />
+                <textarea asp-for="JournalEntry.Note" class="form-control"></textarea>
                 <span asp-validation-for="JournalEntry.Note" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -30,13 +30,10 @@
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
+                <a class="btn btn-outline-info" asp-page="Index">Back to List</a>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-page="Index">Back to List</a>
 </div>
 
 @section Scripts {
